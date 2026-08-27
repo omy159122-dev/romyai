@@ -1,42 +1,62 @@
-"use client"
-import { useState } from "react";
+'use client'; // Hii ni muhimu sana kwa button ifanye kazi
 
 export default function Home() {
-  const [phone, setPhone] = useState("");
-  const [amount, setAmount] = useState("");
 
-  function lipa() {
-    alert(`Tayari! Baada ya kuunganisha na ClickPesa hapa ndio STK itatoka\n\nNamba: ${phone}\nKiasi: ${amount} Tsh`);
+  // HII NDIO FUNCTION YA MALIPO
+  async function lipaSasa(price: number) {
+    const phone = prompt("Weka namba ya M-Pesa: mfano 255712345678");
+    if(!phone) return alert("Tafadhali weka namba");
+
+    const orderId = 'ORD' + Date.now();
+    alert("Tunasubiri STK... Tafadhali angalia simu yako");
+
+    try {
+      const res = await fetch('/API/pay', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({amount: price, phone: phone, orderId: orderId})
+      });
+
+      const data = await res.json();
+      console.log(data);
+      
+      if(data.status === 'success' || data.message) {
+        alert("Ombi limetumwa! Ingiza PIN yako kwenye simu");
+      } else {
+        alert("Kuna shida: " + JSON.stringify(data));
+      }
+    } catch(err) {
+      alert("Error: " + err);
+    }
   }
 
+  // HAPA NDIO DUka LAKO LINAONYESHWA
   return (
-    <div style={{padding: "20px", maxWidth: "400px", margin: "auto", fontFamily: "Arial"}}>
-      <h1 style={{fontSize: "24px", fontWeight: "bold", textAlign: "center"}}>RomyAi Shop</h1>
+    <div style={{padding: '20px', textAlign: 'center'}}>
+      <h1>RomyAi Shop 🛒</h1>
       
-      <p>Namba ya Simu</p>
-      <input
-        type="text"
-        placeholder="0712345678"
-        value={phone}
-        onChange={e => setPhone(e.target.value)}
-        style={{width: "100%", padding: "10px", border: "1px solid gray", borderRadius: "5px", marginBottom: "15px"}}
-      />
+      <div style={{border: '1px solid gray', padding: '20px', margin: '10px', borderRadius: '10px'}}>
+        <h2>Bundle 1GB</h2>
+        <p>Bei: Tsh 1000</p>
+        <button 
+          onClick={() => lipaSasa(1000)}
+          style={{padding: '10px 20px', background: 'blue', color: 'white', border: 'none', borderRadius: '5px'}}
+        >
+          Lipa Sasa
+        </button>
+      </div>
 
-      <p>Kiasi Tsh</p>
-      <input
-        type="number"
-        placeholder="10000"
-        value={amount}
-        onChange={e => setAmount(e.target.value)}
-        style={{width: "100%", padding: "10px", border: "1px solid gray", borderRadius: "5px", marginBottom: "15px"}}
-      />
+      <div style={{border: '1px solid gray', padding: '20px', margin: '10px', borderRadius: '10px'}}>
+        <h2>Bundle 3GB</h2>
+        <p>Bei: Tsh 2500</p>
+        <button 
+          onClick={() => lipaSasa(2500)}
+          style={{padding: '10px 20px', background: 'blue', color: 'white', border: 'none', borderRadius: '5px'}}
+        >
+          Lipa Sasa
+        </button>
+      </div>
 
-      <button 
-        onClick={lipa}
-        style={{width: "100%", padding: "12px", backgroundColor: "green", color: "white", border: "none", borderRadius: "5px", fontSize: "16px"}}
-      >
-        Lipa Sasa na M-Pesa
-      </button>
     </div>
-  );
-      }
+  )
+}
