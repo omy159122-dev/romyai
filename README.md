@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+"use client"
+import { useState } from "react";
 
-## Getting Started
+export default function Home() {
+  const [phone, setPhone] = useState("");
+  const [amount, setAmount] = useState("");
 
-First, run the development server:
+  function lipa() {
+    // Hapa ndio tutaunganisha na ClickPesa baada ya kupata API Key
+    alert("Tutaunganisha na ClickPesa hapa. Kiasi: " + amount);
+  }
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  return (
+    <div className="p-6 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">RomyAi Shop</h1>
+      
+      <label>Namba ya Simu</label>
+      <input 
+        type="text" 
+        placeholder="0712345678" 
+        value={phone}
+        onChange={e => setPhone(e.target.value)}
+        className="border p-2 w-full mb-3"
+      />
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+      <label>Kiasi Tsh</label>
+      <input 
+        type="number" 
+        placeholder="10000" 
+        value={amount}
+        onChange={e => setAmount(e.target.value)}
+        className="border p-2 w-full mb-3"
+      />
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+      <button 
+        onClick={lipa}
+        className="bg-green-600 text-white w-full py-2 rounded"
+      >
+        Lipa Sasa
+      </button>
+    </div>
+  )
+}
