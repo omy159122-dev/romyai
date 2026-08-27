@@ -1,3 +1,4 @@
+
 "use client"
 import { useState } from "react";
 
@@ -6,35 +7,34 @@ export default function Home() {
   const [amount, setAmount] = useState("");
 
   function lipa() {
-    // Hapa ndio tutaunganisha na ClickPesa baada ya kupata API Key
-    alert("Tutaunganisha na ClickPesa hapa. Kiasi: " + amount);
+    alert("Tayari! Baada ya kuunganisha na ClickPesa hapa ndio STK itatoka");
   }
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">RomyAi Shop</h1>
+    <div style={{padding: "20px", maxWidth: "400px", margin: "auto"}}>
+      <h1 style={{fontSize: "24px", fontWeight: "bold"}}>RomyAi Shop</h1>
       
-      <label>Namba ya Simu</label>
+      <p>Namba ya Simu</p>
       <input 
         type="text" 
         placeholder="0712345678" 
         value={phone}
         onChange={e => setPhone(e.target.value)}
-        className="border p-2 w-full mb-3"
+        style={{border: "1px solid gray", padding: "10px", width: "100%", marginBottom: "10px"}}
       />
 
-      <label>Kiasi Tsh</label>
+      <p>Kiasi Tsh</p>
       <input 
         type="number" 
         placeholder="10000" 
         value={amount}
         onChange={e => setAmount(e.target.value)}
-        className="border p-2 w-full mb-3"
+        style={{border: "1px solid gray", padding: "10px", width: "100%", marginBottom: "10px"}}
       />
 
       <button 
         onClick={lipa}
-        className="bg-green-600 text-white w-full py-2 rounded"
+        style={{background: "green", color: "white", width: "100%", padding: "10px"}}
       >
         Lipa Sasa
       </button>
