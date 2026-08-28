@@ -1,24 +1,32 @@
 export async function POST(req) {
-  const { phone, amount } = await req.json();
+  try {
+    const { phone, amount } = await req.json();
+    const formattedPhone = phone.startsWith('0') ? '255' + phone.substring(1) : phone;
 
-  // Badilisha 07... kuwa 2557...
-  const formattedPhone = phone.startsWith('0') ? '255' + phone.substring(1) : phone;
+    const res = await fetch('https://api.clickpesa.com/payments/stk-push', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + process.env.CLICKPESA_CLIENT_SECRET
+      },
+      body: JSON.stringify({
+        amount: Number(amount),
+        phone: formattedPhone,
+        order_id: 'mixxby_' + Date.now(),
+        currency: 'TZS',
+        description: 'Mixxby Yas Wallet'
+      })
+    });
 
-  const res = await fetch('https://api.clickpesa.com/payments/stk-push', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + process.env.CLICKPESA_CLIENT_SECRET
-    },
-    body: JSON.stringify({
-      amount: Number(amount),
-      phone: formattedPhone,
-      order_id: 'mixxby_' + Date.now(),
-      currency: 'TZS',
-      description: 'Mixxby Yas Wallet' // Hii ndio jina litakaonekana kwenye SMS
-    })
-  });
-
-  const data = await res.json();
-  return Response.json(data);
+    const data = await res.json();
+    
+    if(!res.ok) {
+      return Response.json({status: 'error', message: data.message || 'ClickPesa Error'})
+    }
+    
+    return Response.json({status: 'success', data});
+    
+  } catch (error) {
+    return Response.json({status: 'error', message: error.message})
+  }
 }
